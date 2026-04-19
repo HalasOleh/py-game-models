@@ -17,10 +17,10 @@ def main() -> None:
 
             race, _ = Race.objects.get_or_create(
                 name=race_data["name"],
-                description={"description": race_data["description"]},
+                defaults={"description": race_data["description"]},
             )
 
-            for skill_data in race_data.get("skills"):
+            for skill_data in race_data.get("skills", []):
 
                 skill, _ = Skill.objects.get_or_create(
                     name=skill_data["name"],
@@ -35,15 +35,17 @@ def main() -> None:
 
                 guild, _ = Guild.objects.get_or_create(
                     name=guild_data["name"],
-                    description={"description": guild_data["description"]}
+                    defaults={"description": guild_data["description"]}
                 )
 
             player_mod, _ = Player.objects.get_or_create(
                 nickname=player_name,
-                email=data["email"],
-                bio=data["bio"],
-                race=race,
-                guild=guild
+                defaults={
+                    "email": data["email"],
+                    "bio": data["bio"],
+                    "race": race,
+                    "guild": guild,
+                }
             )
 
 
